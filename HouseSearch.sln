@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26020.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "pyHouseSearch", "HouseSearch\pyHouseSearch.pyproj", "{6FE5A842-37F4-4721-AB4E-F4967FB97C18}"
 EndProject
+Project("{DA7A21FA-8162-4350-AD77-A8D1B671F3ED}") = "RStat", "RStat\RStat.rxproj", "{13863D37-3E3C-4958-8EC8-C663D51B2334}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6FE5A842-37F4-4721-AB4E-F4967FB97C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6FE5A842-37F4-4721-AB4E-F4967FB97C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13863D37-3E3C-4958-8EC8-C663D51B2334}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13863D37-3E3C-4958-8EC8-C663D51B2334}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13863D37-3E3C-4958-8EC8-C663D51B2334}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13863D37-3E3C-4958-8EC8-C663D51B2334}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

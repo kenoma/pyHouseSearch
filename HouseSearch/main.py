@@ -14,7 +14,7 @@ env = ObjDummy()
 env.dataDir = '%s\\data\\'%os.path.dirname(os.path.realpath(__file__))
 env.imgOutput = '%s\\data\\imgs\\'%os.path.dirname(os.path.realpath(__file__))
 
-cian.GoGrab(env, 1, False)
+cian.GoGrab(env, 5, False)
 
 print('----------------------------')
 print('Completed on')
