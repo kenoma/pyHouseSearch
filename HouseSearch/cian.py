@@ -10,9 +10,11 @@ from grab.spider import Spider, Task
 import codecs
 
 sitePath = 'cian/'
+visitedDic = dict()
 
 class SitePars(Spider):
     initial_urls = ['https://rostov.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=1&region=4959&room1=1&room2=1&room3=1&room7=1&room9=1']
+    
 
     def prepare(self):
         if not os.path.exists(self.env.dataDir + sitePath):
@@ -22,12 +24,11 @@ class SitePars(Spider):
                 csv_file.write(u'ID;Type;Material;Region;Street;Floor;MaxFloor;Rooms;Square;LivingSquare;KitchenSquare;Price;Date;Link;\n')
 
     def task_initial(self, grab, task):
-        num_of_pages = 2+30
+        num_of_pages = 2+200
         for n in range(1, num_of_pages):
             yield Task(u'nav', url = u'https://rostov.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=%s&region=4959&room1=1&room2=1&room3=1&room7=1&room9=1' % n)
 
     def task_nav(self, grab, task):
-        global typeDict
 
         obj, url, request, xpath_string = '', '', '', ''
         for elem in grab.doc.tree.xpath('//a[@target="_blank"]/@href'):
@@ -36,7 +37,7 @@ class SitePars(Spider):
                 yield Task('cianobject', url=grab.make_url_absolute(elem))
 
     def task_cianobject(self, grab, task):
-        global imgDict, typeDict, roomsDict
+        global visitedDic
 
         stripPrice = re.compile(u'[\s0-9]+', re.U)
         stripNum = re.compile(u'\d+',re.U)
@@ -44,7 +45,9 @@ class SitePars(Spider):
         dateYest = datetime.timedelta(days=1)
         
         objID = stripNum.findall(task.url)[0]
-
+        if objID in visitedDic:
+            return
+        visitedDic[objID]=1
         rCost = stripPrice.findall(grab.doc.select(u'//div[@class="object_descr_price"]').text())[0]
         rCost = re.sub("[^0-9]","", rCost, re.U) + ';'
         

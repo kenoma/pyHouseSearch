@@ -29,10 +29,11 @@ length(x$ID)
 model <- lm(Price ~ Square + Rooms + Floor + MaxFloor + Type, data = x)
 coef(model)
 predicted.cost <- predict(model, x)
-actual.price <- x$price
+actual.price <- x$Price
 plot(predicted.cost, actual.price)
+sorted <- sort(predicted.cost / actual.price, decreasing = TRUE)
 par(new=TRUE, col="red")
-dependency <- lm(predicted.cost, actual.price)
+dependency <- lm(predicted.cost~ actual.price)
 dependency <- lm(predicted.cost, actual.price)
 actual.price <- x$Price
 dependency <- lm(predicted.cost, actual.price)
@@ -42,7 +43,7 @@ plot(predicted.cost, actual.price)
 par(new=FALSE, col="black")
 plot(predicted.cost, actual.price)
 dependency <- lm(predicted.cost, actual.price)
-sorted <- sort(predicted.cost / actual.price, decreasing = TRUE)
+
 sorted[0:10]
 plot(x$Rooms,x$Price)
 plot(x$Rooms,x$Price)
