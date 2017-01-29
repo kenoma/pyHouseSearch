@@ -13,7 +13,7 @@ sitePath = 'cian/'
 visitedDic = dict()
 
 class SitePars(Spider):
-    initial_urls = ['https://rostov.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=1&region=4959&room1=1&room2=1&room3=1&room7=1&room9=1']
+    initial_urls = ['https://rostov.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=1&region=4959&room1=1']
     
 
     def prepare(self):
@@ -21,12 +21,12 @@ class SitePars(Spider):
             os.mkdir(self.env.dataDir + sitePath)
         if not os.path.exists(self.env.dataDir + u'cian_output.csv'):
             with codecs.open(self.env.dataDir + u'cian_output.csv', u'w', encoding=u'utf-8') as csv_file:
-                csv_file.write(u'ID;Type;Material;Region;Street;Floor;MaxFloor;Rooms;Square;LivingSquare;KitchenSquare;Price;Date;Link;\n')
+                csv_file.write(u'ID;Type;Material;Region;Street;Floor;MaxFloor;Rooms;Square;LivingSquare;KitchenSquare;Price;Delivery;rBuilt;Date;Link;\n')
 
     def task_initial(self, grab, task):
         num_of_pages = 2+200
         for n in range(1, num_of_pages):
-            yield Task(u'nav', url = u'https://rostov.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=%s&region=4959&room1=1&room2=1&room3=1&room7=1&room9=1' % n)
+            yield Task(u'nav', url = u'https://rostov.cian.ru/cat.php?deal_type=sale&engine_version=2&offer_type=flat&p=%s&region=4959&room1=1' % n)
 
     def task_nav(self, grab, task):
 
@@ -70,6 +70,15 @@ class SitePars(Spider):
         rLiveSquare = rLiveSquare.split(' ')[0] + ';'
         rDinnerSquare = grab.doc.select(u'//tr[th[contains(.,\'Площадь кухни:\')]]/td').text()
         rDinnerSquare = rDinnerSquare.split(' ')[0] + ';'
+        try:
+            rDelivery = grab.doc.select(u'//tr[th[contains(.,\'Сдача ГК\')]]/td').text() + ';'
+        except:
+            rDelivery = '-;'
+        try:
+            rBuilt = grab.doc.select(u'//tr[th[contains(.,\'Год постройки\')]]/td').text() + ';'
+        except:
+            rBuilt = '-;'
+        
         #rRights = grab.doc.select(u'//tr[th[contains(.,\'Тип
         #продажи:\')]]/td').text() + ';'
         
@@ -85,7 +94,7 @@ class SitePars(Spider):
         for elem in grab.xpath_list(u'//span[@class="object_descr_rieltor_name"]'):
             rAgency = elem.text_content() + ';'
         
-        stringO = objID + ';' + rType + rMaterial + rRegion + rStreet + rFloor + rMaxFloor + rRoomCount + rSquare + rLiveSquare + rDinnerSquare + rCost + rDate + task.url + ';'
+        stringO = objID + ';' + rType + rMaterial + rRegion + rStreet + rFloor + rMaxFloor + rRoomCount + rSquare + rLiveSquare + rDinnerSquare + rCost + rDelivery+rBuilt + rDate + task.url + ';'
 
         #пишем в файл
         stringO = stringO.strip('\r\n\t').replace('\r\n', ' ')
